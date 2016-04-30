@@ -2,6 +2,8 @@
 # section from SEC Forms 10-k and 10-q
 import re
 import html2text
+from bs4 import BeautifulSoup
+
 
 class MDAParser():
     def __init__(self):
@@ -22,14 +24,13 @@ class MDAParser():
         item7_end_pos = None
         item8_beg_pos = None
 
-        #configure html 2 text object
-        h = html2text.HTML2Text()
-        h.ignore_links = True
-
         #read in file
         f = self.openfile(file_path)
         raw_text = f.read()
-        text = html2text.html2text(raw_text)
+
+        #Use BeautifulSoup to remove markup tags
+        soup = BeautifulSoup(raw_text, "lxml")
+        text = soup.get_text()
 
         #Get filing date
         filing_date = re.search(expr_re_filing_date, text)
@@ -66,15 +67,13 @@ class MDAParser():
         item2_end_pos = None
         item4_beg_pos = None
 
-        h = html2text.HTML2Text()
-        h.ignore_links = True
-
         # read in file
         f = self.openfile(file_path)
         raw_text = f.read()
 
-        # text = re.sub('<[^>]*>', '', raw_text)
-        text = html2text.html2text(raw_text)
+        # Use BeautifulSoup to remove markup tags
+        soup = BeautifulSoup(raw_text, "lxml")
+        text = soup.get_text()
 
         #Get filing date
         filing_date = re.search(expr_re_filing_date, text)
