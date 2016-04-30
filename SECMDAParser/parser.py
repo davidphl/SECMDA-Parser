@@ -1,7 +1,6 @@
 # This script will parse the Management Discussion and Analysis
 # section from SEC Forms 10-k and 10-q
 import re
-import html2text
 from bs4 import BeautifulSoup
 
 
